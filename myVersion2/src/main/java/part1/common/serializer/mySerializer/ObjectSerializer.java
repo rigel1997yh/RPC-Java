@@ -23,7 +23,18 @@ public class ObjectSerializer implements Serializer {
 
     @Override
     public Object deserializer(byte[] bytes, int messageType) {
-        return null;
+        Object obj = null;
+        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+        try {
+            ObjectInputStream ois = new ObjectInputStream(bis);
+            obj = ois.readObject();
+            ois.close();
+            bis.close();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return obj;
     }
 
     @Override
